@@ -1,0 +1,25 @@
+makeCacheMatrix <- function(m = matrix()) { ## define the argument of "matrix" mode
+    inverse_m <- NULL                             
+    set <- function(y) {                    
+        m <<- y                             
+        inverse_m <<- NULL                       
+    }
+    get <- function()                       ## define the get fucntion 
+
+    setinverse <- function(inverse) inverse_m <<- inverse  ## assigns value of inverse_m in parent environment
+    getinverse <- function() inverse_m                     ## gets the value of inverse_m
+    list(set = set, get = get, setinverse = setinverse, getinverse = getinverse)  ## referal to the functions with the $ operator 
+                                                                                 
+}
+cacheSolve <- function(m, ...) {
+        ## Return a matrix that is the inverse of 'm'
+    inverse_m <- m$getinverse()
+    if(!is.null(inverse_m)) {
+        message("getting cached data")
+        return(inverse_m)
+    }
+    data <- m$get()
+    inverse_m <- solve(data, ...)
+    m$setinverse(inverse_m)
+    inverse_m
+}
